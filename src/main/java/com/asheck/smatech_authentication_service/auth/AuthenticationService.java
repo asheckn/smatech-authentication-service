@@ -36,14 +36,14 @@ public class AuthenticationService {
                 .firstName(request.firstName())
                 .lastName(request.lastName())
                 .email(request.email())
+                .phoneNumber(request.phoneNumber())
+                .address(request.address())
+                .isActive(true)
+                .isDeleted(false)
                 .password(passwordEncoder.encode(request.password()))
                 .role(Role.CUSTOMER)
                 .build();
-
         repository.save(user);
-
-
-
 
         var jwtToken = jwtService.generateToken(user);
        return  ResponseEntity.status(HttpStatus.CREATED).body(AuthenticationResponse.builder()
