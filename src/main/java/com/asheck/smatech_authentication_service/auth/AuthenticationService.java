@@ -2,6 +2,7 @@ package com.asheck.smatech_authentication_service.auth;
 
 import com.asheck.smatech_authentication_service.config.JwtService;
 import com.asheck.smatech_authentication_service.user.Role;
+import com.asheck.smatech_authentication_service.user.UpdateUserRequest;
 import com.asheck.smatech_authentication_service.user.User;
 import com.asheck.smatech_authentication_service.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -103,4 +104,27 @@ public class AuthenticationService {
         );
     }
 
+    public User updateUser(Long id, UpdateUserRequest request) {
+        var user = repository.findByIdAndRole(id, Role.CUSTOMER).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found")
+        );
+
+        if(request.firstName() != null){
+            user.setFirstName(request.firstName());
+        }
+
+        if(request.lastName() != null){
+            user.setLastName(request.lastName());
+        }
+
+        if(request.phoneNumber() != null){
+            user.setPhoneNumber(request.phoneNumber());
+        }
+
+        if(request.address() != null){
+            user.setAddress(request.address());
+        }
+
+        return repository.save(user);
+    }
 }

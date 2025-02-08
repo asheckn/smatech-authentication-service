@@ -1,5 +1,6 @@
 package com.asheck.smatech_authentication_service.auth;
 import com.asheck.smatech_authentication_service.user.Role;
+import com.asheck.smatech_authentication_service.user.UpdateUserRequest;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -60,6 +61,14 @@ public class AuthenticationController {
     @GetMapping("/roles")
     public ResponseEntity<?> getRoles(){
         return ResponseEntity.ok(Role.values());
+    }
+
+    @PatchMapping("/update-user/{id}")
+    public ResponseEntity<?> updateUser(
+            @PathVariable Long id,
+            @RequestBody UpdateUserRequest request
+    ){
+        return ResponseEntity.ok(service.updateUser(id, request));
     }
 
 }
