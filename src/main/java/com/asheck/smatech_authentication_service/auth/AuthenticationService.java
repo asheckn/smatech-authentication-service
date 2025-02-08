@@ -11,7 +11,10 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpStatusCodeException;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -24,7 +27,7 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
-    public ResponseEntity<?>  register(RegisterRequest request) {
+    public ResponseEntity<?>  register(RegisterRequest request, Role role) {
 
         Optional<User> existingUser = repository.findByEmail(request.email());
         if (existingUser.isPresent()) {
@@ -41,7 +44,7 @@ public class AuthenticationService {
                 .isActive(true)
                 .isDeleted(false)
                 .password(passwordEncoder.encode(request.password()))
-                .role(Role.CUSTOMER)
+                .role(role)
                 .build();
         repository.save(user);
 
@@ -85,4 +88,19 @@ public class AuthenticationService {
         return repository.findByEmail(userEmail)
                .orElseThrow();
     }
+
+    public User getUserById(long userId, Role role) {
+        return repository.findByIdAndRole(userId, role)
+                .orElseThrow(
+                        () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found")
+                );
+    }
+
+    public List<User> getUsers(Role role) {
+        //get all users with role customer
+        return repository.findAllByRole(role).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Users not found")
+        );
+    }
+
 }
