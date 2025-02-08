@@ -4,6 +4,8 @@ server:
 jwt:
   secret: oyVEQth8OzBiVJRv1y3P+MY4ksqpYeEImi16C0An3/oMecLIl0LWmHRRDrHznal+pKcbYIhl+fiPyIQfHopToAO9tDNl7qMRD2YtENKTYjWp5yh7vznG3wsLWBoeqaZFGbNBeo2QnvoUbj9eyy1Jhk5P6XjhgXwjIl2nnydvQvo8g/KwerG9eyKOynRXCf0RMVFGlTaCPqeBHXTz4kioWa9OxQ3vK2/pDA/tKnmg7W+yfvWX32hY12+TUn7DIpCWB7RB+x/Lo5pMGnTFqrubrwfaZ+kTQ6NYDhZ6+Z0YuxdYgqu+vN+drSLgL0hbF3n3xsVENiEQZ0hfTCdQEO6knx5QEL/QWK3NQ/iREUYyJQg=
 spring:
+  application:
+    name: smatech-authentication
   datasource:
     password: root
     url: jdbc:postgresql://localhost:5432/smatech-auth
