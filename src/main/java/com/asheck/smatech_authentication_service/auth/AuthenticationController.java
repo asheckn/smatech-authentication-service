@@ -53,6 +53,11 @@ public class AuthenticationController {
         return ResponseEntity.ok(service.getUserById(id, Role.CUSTOMER));
     }
 
+    @GetMapping("/get-user-by-token")
+    public ResponseEntity<?> getUserByToken(@RequestParam String token){
+        return ResponseEntity.ok(service.getUserByToken(token, Role.CUSTOMER));
+    }
+
     @GetMapping("/get-Admin/{id}")
     public ResponseEntity<?> getAdmin(@PathVariable Long id){
         return ResponseEntity.ok(service.getUserById(id, Role.ADMIN));

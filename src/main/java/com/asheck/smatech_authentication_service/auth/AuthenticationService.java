@@ -97,6 +97,17 @@ public class AuthenticationService {
                 );
     }
 
+    public User getUserByToken(String token, Role role) {
+
+        final String userEmail = jwtService.extractUsername(token);
+
+        return repository.findByEmail(userEmail)
+                .orElseThrow(
+                        () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found")
+                );
+
+    }
+
     public List<User> getUsers(Role role) {
         //get all users with role customer
         return repository.findAllByRole(role).orElseThrow(
