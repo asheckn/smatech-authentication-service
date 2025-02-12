@@ -27,6 +27,10 @@ springdoc:
     path: /docs
   swagger-ui:
     path: /swagger
+
+eureka:
+  instance:
+    prefer-ip-address: true
 web:
   cors:
     allowed-origins: "http://localhost:4200"
