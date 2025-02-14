@@ -78,7 +78,7 @@ public class AuthenticationService {
                     .build();
         }else {
 
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Incorrect username or password");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Incorrect username or password");
         }
 
 
