@@ -1,0 +1,56 @@
+networks:
+  smatech:
+    external: true
+
+services:
+  auth-service:
+    image: auth-service:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: auth-service
+    depends_on:
+      - postgres
+    environment:
+#      SPRING_APPLICATION_NAME: smatech-authentication
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/smatech-auth
+#      SPRING_DATASOURCE_USERNAME: postgres
+#      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+#      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+      SERVER_ERROR_INCLUDE_MESSAGE: always
+      JWT_SECRET: "oyVEQth8OzBiVJRv1y3P+MY4ksqpYeEImi16C0An3/oMecLIl0LWmHRRDrHznal+pKcbYIhl+fiPyIQfHopToAO9tDNl7qMRD2YtENKTYjWp5yh7vznG3wsLWBoeqaZFGbNBeo2QnvoUbj9eyy1Jhk5P6XjhgXwjIl2nnydvQvo8g/KwerG9eyKOynRXCf0RMVFGlTaCPqeBHXTz4kioWa9OxQ3vK2/pDA/tKnmg7W+yfvWX32hY12+TUn7DIpCWB7RB+x/Lo5pMGnTFqrubrwfaZ+kTQ6NYDhZ6+Z0YuxdYgqu+vN+drSLgL0hbF3n3xsVENiEQZ0hfTCdQEO6knx5QEL/QWK3NQ/iREUYyJQg="
+      SPRINGDOC_API_DOCS_ENABLED: "true"
+      SPRINGDOC_SWAGGER_UI_PATH: "/swagger"
+      WEB_CORS_ALLOWED_ORIGINS: "*"
+      WEB_CORS_ALLOWED_METHODS: "GET, POST, PATCH, PUT, DELETE, OPTIONS, HEAD"
+      WEB_CORS_ALLOWED_HEADERS: "Requestor-Type"
+      WEB_CORS_EXPOSED_HEADERS: "X-Get-Header"
+#      EUREKA_INSTANCE_PREFER_IP_ADDRESS: "true"
+      DEFAULT_EUREKA_ZONE: "http://eureka-server:8761/eureka/"
+    ports:
+      - "8081:8081"
+    restart: always
+    networks:
+      - smatech
+
+  postgres:
+    image: postgres:15
+    container_name: smatech-postgres
+    environment:
+      POSTGRES_DB: smatech-auth
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
+    restart: always
+    networks:
+      - smatech
+
+
+
+volumes:
+  postgres_data:
